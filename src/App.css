@@ -1,0 +1,10 @@
+.App {
+  text-align: center;
+  background-image: url('./images/bg-img.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  
+  overflow: hidden;
+}
+
