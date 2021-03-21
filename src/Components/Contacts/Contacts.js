@@ -9,8 +9,11 @@ if(!firebase.apps.length){
 const Contacts = () => {
     
     return (
-        <div>
-            Coming Soon.........................
+        <div className="text-white">
+           <form action="">
+           <textarea name="" id="" cols="40" rows="10" placeholder="Enter Private message here....." className="mt-3 rounded" required></textarea> <br/>
+            <button type="submit" className="btn btn-primary">Send</button>
+           </form>
         </div>
     );
 };

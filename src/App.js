@@ -16,9 +16,8 @@ import { createContext, useState } from 'react';
 import FakeData from './Fakedata.json'
 import ChooseData from './Components/ChooseData/ChooseData';
 import Contacts from './Components/Contacts/Contacts';
+import Blog from './Components/Blog/Blog';
 export const UserContext = createContext()
-
-
 function App() {
   const [loggedInUser,setLoggedInUser] = useState({
     signIn:true,
@@ -47,11 +46,17 @@ function App() {
               <Route path='/sign up'>
                 <Login FakeData={FakeData} setData={setData}></Login>
               </Route>
-              <Route path="/contact">
+              <PrivateRoute path="/contact">
                 <Contacts></Contacts>
-              </Route>
+              </PrivateRoute>
+              <PrivateRoute path="/blog">
+                <Blog></Blog>
+              </PrivateRoute>
               <Route exact path='/'>
               <Main FakeData={FakeData} setData={setData}></Main>
+              </Route>
+              <Route path='*'>
+                <h1 className='text-danger'>404-Link not found.</h1>
               </Route>
         </Switch>
       </Router>

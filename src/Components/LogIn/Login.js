@@ -22,18 +22,18 @@ const Login = () => {
     signIn:true,
     id:''
   })
+  console.log(user);
   const [loggedInUser,setLoggedInUser] = useContext(UserContext)
   const [isSignedIn,setIsSignedIn] = useState(false);
   const [isSignedUp,setIsSignedUp] = useState(false);
+  const [isError,setIsError] = useState(false);
   const [isPasswordMatched,setIsPasswordMatched] = useState(false);
   const history = useHistory();
   const location = useLocation();
   let { from } = location.state || { from: { pathname: "/" } };
-    const handleGoogleSignIn = () =>{
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
-    .then((result) => {
-      const user = result.user
+  const updateUserFromGoogleAndFb=(result)=>{
+
+    const user = result.user
       const newUser={
         email:user.email,
         photo:user.photoURL,
@@ -44,15 +44,43 @@ const Login = () => {
    setUser(newUser)
     setLoggedInUser(newUser)
     history.replace(from);
-  })
-  .catch((error) => {
+  }
+  const updateErrorFromGoogleAndFb=(error)=>{
     const errorMessage = error.message;
     console.log(errorMessage);
     const newUser = {...user}
     newUser['error'] = errorMessage
     setUser(newUser)
-    setLoggedInUser(newUser)
-    history.replace(from)
+    // setLoggedInUser(newUser)
+    // history.replace(from)
+
+  }
+    const handleGoogleSignIn = () =>{
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      updateUserFromGoogleAndFb(result)
+  //     const user = result.user
+  //     const newUser={
+  //       email:user.email,
+  //       photo:user.photoURL,
+  //       name:user.displayName,
+  //       signIn:false,
+  //       id:''
+  //   }
+  //  setUser(newUser)
+  //   setLoggedInUser(newUser)
+  //   history.replace(from);
+  })
+  .catch((error) => {
+    updateErrorFromGoogleAndFb(error);
+    // const errorMessage = error.message;
+    // console.log(errorMessage);
+    // const newUser = {...user}
+    // newUser['error'] = errorMessage
+    // setUser(newUser)
+    // setLoggedInUser(newUser)
+    // history.replace(from)
   });
     }
   const handleEmailSignUp = () =>{
@@ -62,74 +90,90 @@ const Login = () => {
      firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
    .then(res => {
      const newUser={...user}
-     console.log(newUser);
+     newUser.error =''
      setUser(newUser)
      setLoggedInUser(newUser)
      setIsSignedUp(true)
      setIsPasswordMatched(false)
+     setIsError(false)
      updateUserInfo(user.name)
    })
    .catch((error) => {
-     const errorMessage = error.message;
-     const newUser = {...user}
-     newUser.error = errorMessage
-     setUser(newUser)
-     setLoggedInUser(newUser)
+     emailSignUpAndSignInError(error)
+    //  const errorMessage = error.message;
+    //  const newUser = {...user}
+    //  newUser.error = errorMessage
+    //  setUser(newUser)
+    //  setLoggedInUser(newUser)
  });
        }
-       else{
+       else if(pass!==confirmPass){
          setIsPasswordMatched(true)
        }
-        
+        else{
+          setIsError(true)
+        }
      }
   const handleEmailSignIn = () =>{
    firebase.auth().signInWithEmailAndPassword(user.email,user.password)
   .then((userCredential) => {
-    var user = userCredential.user;
+    const user = userCredential.user;
     const newUserInfo ={...user}
+    newUserInfo.email = user.email
     newUserInfo.name=user.displayName
     setUser(newUserInfo)
     setLoggedInUser(newUserInfo)
     history.replace(from);
+    setIsError(false)
     console.log(user);
    })
    .catch((error) => {
-     const errorMessage = error.message;
+     emailSignUpAndSignInError(error);
+  //    const errorMessage = error.message;
+  //    const newUser = {...user}
+  //   newUser.error = errorMessage
+  //    console.log(errorMessage);
+  //  setUser(newUser)
+  //   setLoggedInUser(newUser)
+
+   });
+}
+const emailSignUpAndSignInError =(error)=>{
+  const errorMessage = error.message;
      const newUser = {...user}
     newUser.error = errorMessage
      console.log(errorMessage);
    setUser(newUser)
+   setIsPasswordMatched(false)
     setLoggedInUser(newUser)
 
-   });
 }
 const handleFacebookSignIn = () =>{
   const fbProvider = new firebase.auth.FacebookAuthProvider();
-  firebase
-  .auth()
-  .signInWithPopup(fbProvider)
+  firebase.auth().signInWithPopup(fbProvider)
   .then((result) => {
-    const user = result.user;
-    const newUser={
-      email:user.email,
-      photo:user.photoURL,
-      name:user.displayName,
-      signIn:false,
-      id:''
-  }
-
-  setUser(newUser)
-  setLoggedInUser(newUser)
-  history.replace(from);
+    updateUserFromGoogleAndFb(result)
+  //   const user = result.user;
+  //   const newUser={
+  //     email:user.email,
+  //     photo:user.photoURL,
+  //     name:user.displayName,
+  //     signIn:false,
+  //     id:''
+  // }
+  // setUser(newUser)
+  // setLoggedInUser(newUser)
+  // history.replace(from);
   })
   .catch((error) => {
+    updateErrorFromGoogleAndFb(error);
 
-    const errorMessage = error.message;
-    const newUser = {...user}
-    newUser['error'] = errorMessage
-    console.log(errorMessage);
-    setUser(newUser)
-    setLoggedInUser(newUser)
+    // const errorMessage = error.message;
+    // const newUser = {...user}
+    // newUser['error'] = errorMessage
+    // console.log(errorMessage);
+    // setUser(newUser)
+    // setLoggedInUser(newUser)
 
   });
 
@@ -162,7 +206,7 @@ user.updateProfile({
       isFormValid =/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[a-zA-Z!#$%&? "])[a-zA-Z0-9!#$%&?]{6,20}$/.test(e.target.value)
       
     }
-    if(isFormValid){
+    if(isFormValid===true){
       const userInfo={...user}
       userInfo[e.target.name] = e.target.value
       setUser(userInfo)
@@ -174,8 +218,7 @@ user.updateProfile({
       setIsSignedUp(false)
     }
     return (
-      
-        <div style={{marginTop:'100px',backgroundColor:'black',marginBottom:'100px',color:'white'}} className="w-lg-75 w-sm-100 mx-auto">
+              <div style={{marginTop:'100px',backgroundColor:'black',marginBottom:'100px',color:'white'}} className="w-lg-75 w-sm-100 mx-auto rounded">
            {
             isSignedIn && <div>
               <label >Full Name</label>
@@ -203,6 +246,9 @@ user.updateProfile({
           } 
           <p className='text-danger'>{user.error}</p>
           {
+            isError && <p className="text-danger">Please fill the form correctly</p>
+          }
+          {
             isSignedUp && <p className='text-success'>Account Creates Successfully</p>
           }
           {
@@ -215,14 +261,9 @@ user.updateProfile({
         <button type="submit" class="btn btn-primary mt-3 mb-3 ml-3" onClick={handleGoogleSignIn}><FontAwesomeIcon icon={faGoogle} style={{color:'yellow'}}></FontAwesomeIcon >Google Sign In</button> <br/>
         <button type="submit" class="btn btn-primary mt-3 mb-3 ml-3" onClick={handleFacebookSignIn}><FontAwesomeIcon icon={faFacebookF} style={{color:'blue',marginRight:'5px'}}></FontAwesomeIcon >Facebook Sign In</button> <br/>
         {
-           isSignedIn ? <Link to='/login'  onClick={haveAccount}>I have an account</Link>: <Link to='/sign up' onClick={haveAccount}>I have no account</Link>
+           isSignedIn ? <Link to='/login'  onClick={haveAccount} className='mb-3'>I have an account</Link>: <Link to='/sign up' onClick={haveAccount}  className='mb-3'>I have no account</Link>
          }
-        
-      </div>
-    
+               </div>
     )
-    
-  
 };
-
 export default Login;

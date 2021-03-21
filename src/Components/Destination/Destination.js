@@ -56,7 +56,7 @@ const Destination = (props) => {
     return (
   
     <div className="text-center row ">
-        <div className='col-md-5 mt-0 mb-3'>
+        <div className='col-6 mt-0 mb-3'>
         {
             isHide===false ? <div className='mt-5'>
                 <form action="">
@@ -87,9 +87,8 @@ const Destination = (props) => {
             
         }
         </div>
-        <div className='col-md-7'>
-         {/* <img src={map} className='w-75 mt-5 mb-3' alt="" srcset=""/>  */}
-         <Map google={props.google} zoom={14} style={{height:'100%',width:'100%',marginTop:'30px'}}>
+        <div className='col-6 mt-3'>
+         <Map google={props.google} zoom={14} style={{height:'90%',width:'80%',marginTop:'30px'}}>
          <Marker onClick={props.onMarkerClick}
                 name={'Current location'} />
                 <InfoWindow onClose={props.onInfoWindowClose}>
