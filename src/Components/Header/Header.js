@@ -6,9 +6,8 @@ const Header = () => {
     const [loggedInUser,setLoggedInUser]=useContext(UserContext)
     return (
         <div className='d-flex justify-content-between  border-bottom-white bg-success'>
-
             <Navbar  expand="lg">
-                <Navbar.Brand href="/home" className="text-danger font-weight-bold">Vehicle Services</Navbar.Brand>
+                <Navbar.Brand href="/home" className="text-dark font-weight-bold">Vehicle Services</Navbar.Brand>
             </Navbar>
            <div>
                 <Navbar  expand="lg">
@@ -20,12 +19,10 @@ const Header = () => {
                             <Link to="/blog" className=" mr-3 text-white">Blog</Link>
                             <Link to="/contact" className=" mr-3 text-white">Contacts</Link>
                             {
-                                loggedInUser.signIn ? <Link to="/login" className=" mr-3 text-white">Sign In</Link>: <p className=" mr-3 text-white">{loggedInUser.name}</p>
+                                loggedInUser.signIn ? <Link to="/login" className=" mr-3 text-white">Sign In</Link>:<p className=" mr-3 text-white">{loggedInUser.name}</p>
                             }
                         </Nav>
-
-                    </Navbar.Collapse>
-
+                   </Navbar.Collapse>
                 </Navbar>
             </div>
         </div>

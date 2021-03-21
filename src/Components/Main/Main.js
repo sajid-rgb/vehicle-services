@@ -1,7 +1,6 @@
 import React from 'react';
 import Home from '../Home/Home';
 import './Main.css'
-// import Fakedata from '../../Fakedata.json'
 const Main = ({FakeData,data,setData}) => {
     return (
         <div className='main' >
