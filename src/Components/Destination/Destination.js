@@ -5,7 +5,7 @@ import ChooseData from '../ChooseData/ChooseData';
 import FakeData from '../../Fakedata.json'
 import { UserContext } from '../../App';
 import { useForm } from "react-hook-form";
-import {Map, GoogleApiWrapper} from 'google-maps-react';
+import {Map, GoogleApiWrapper,Marker,InfoWindow} from 'google-maps-react';
 
 const Destination = (props) => {
     const {FakeData,data,setData} =props
@@ -13,7 +13,8 @@ const Destination = (props) => {
     // console.log(id);
     const [inputValue,setInputValue] = useState({
         from:'',
-        to:''
+        to:'',
+        date:''
     })
     const [fixedInput,setFixedInput]=useState(false)
     const [fixedInput2,setFixedInput2]=useState(false)
@@ -35,23 +36,23 @@ const Destination = (props) => {
             const newInputValue = {...inputValue}
             newInputValue['to'] = to
             setInputValue(newInputValue)
-            if(e.target.value !==''){
-                
-                setFixedInput2(true)
-            }
+            
+        }
+        if(e.target.name==='date'){
+            const date = e.target.value
+            const newInputValue = {...inputValue}
+            newInputValue['date'] = date
+            setInputValue(newInputValue)
+            
         }
         
 }
   let errors;
   const clickToHide = ()=>{
-     if(setFixedInput && setFixedInput2){
+     if(inputValue.from && inputValue.to && inputValue.date){
          setIsHide(true)
       }
-     else{
-      errors='Please Select your destination'
-
-       }
-  }
+    }
     return (
   
     <div className="text-center row ">
@@ -63,6 +64,8 @@ const Destination = (props) => {
         <input type="text" class="form-control w-100" name="from"  maxLength="10"  onBlur={inputOnBlur} required/>
         <label for="exampleInputEmail1"  className="text-white">To</label><br/>
         <input type="text" class="form-control w-100" name="to" maxLength="10"  onBlur={inputOnBlur}  required/>
+        <label for="exampleInputEmail1"  className="text-white">Tour Date</label><br/>
+        <input type="date" class="form-control w-100" name="date" maxLength="10"  onBlur={inputOnBlur}  required/>
         <button as={Link} to={"/destination/"+data}  className="btn btn-success mt-3 mb-3" onClick={clickToHide}>Search</button>
 
                 </form>
@@ -86,8 +89,14 @@ const Destination = (props) => {
         </div>
         <div className='col-md-7'>
          {/* <img src={map} className='w-75 mt-5 mb-3' alt="" srcset=""/>  */}
-         <Map google={props.google} zoom={14} style={{height:'65%',width:'60%',marginTop:'30px'}}>
- 
+         <Map google={props.google} zoom={14} style={{height:'100%',width:'100%',marginTop:'30px'}}>
+         <Marker onClick={props.onMarkerClick}
+                name={'Current location'} />
+                <InfoWindow onClose={props.onInfoWindowClose}>
+            <div>
+              <h1>{props.selectedPlace}</h1>
+            </div>
+        </InfoWindow>
            
  </Map> 
          

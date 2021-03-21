@@ -2,7 +2,6 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import FakeData from "../../Fakedata.json"
-import ReactDOM from 'react-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
@@ -25,7 +24,7 @@ const ChooseData = ({inputValue,data}) => {
            <h4 className='mt-4'>{selectData.name}</h4>
            <h5 className='mt-4 ml-md-2'><FontAwesomeIcon icon={faUsers} style={{color: 'white'}}></FontAwesomeIcon>4</h5>
            </div>
-           <h5 className='mt-3 mr-4'>${selectData.Fare}</h5>
+           <h5 className='mt-3 mr-md-4'>${selectData.Fare}</h5>
           
               
            </div>
@@ -35,7 +34,7 @@ const ChooseData = ({inputValue,data}) => {
            <h4 className='mt-4'>{selectData.name}</h4>
            <h5 className='mt-4 ml-md-2'><FontAwesomeIcon icon={faUsers} style={{color: 'white'}}></FontAwesomeIcon>4</h5>
            </div>
-           <h5 className='mt-3 mr-4'>${selectData.Fare}</h5>
+           <h5 className='mt-3 mr-md-4'>${selectData.Fare}</h5>
           
               
            </div>
@@ -45,10 +44,8 @@ const ChooseData = ({inputValue,data}) => {
            <h4 className='mt-4'>{selectData.name}</h4>
            <h5 className='mt-4 ml-md-2'><FontAwesomeIcon icon={faUsers} style={{color: 'white'}}></FontAwesomeIcon>4</h5>
            </div>
-           <h5 className='mt-3 mr-4'>${selectData.Fare}</h5>
-          
-              
-           </div>
+           <h5 className='mt-3 mr-md-4'>${selectData.Fare}</h5>
+</div>
 
             
         </div>
