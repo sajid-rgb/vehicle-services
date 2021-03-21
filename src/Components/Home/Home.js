@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../App';
 const Home = ({ vehicle, data, setData }) => {
     const { images, name, id } = vehicle;
     const passData = () => {

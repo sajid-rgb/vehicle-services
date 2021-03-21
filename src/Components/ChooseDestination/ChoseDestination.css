@@ -1,0 +1,16 @@
+.destination-option{
+    height: 100px;
+    margin-top: 40px;
+    border: 3px solid grey;
+}
+.vehicle{
+    border-bottom: 2px solid black;
+}
+@media(max-width:600px){
+    .destination-option{
+        height: 130px;
+        margin-top: 40px;
+        border: 3px solid grey;
+    }
+
+}

@@ -14,7 +14,7 @@ import Destination from './Components/Destination/Destination';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import { createContext, useState } from 'react';
 import FakeData from './Fakedata.json'
-import ChooseData from './Components/ChooseData/ChooseData';
+import ChooseDestination from './Components/ChooseDestination/ChooseDestination';
 import Contacts from './Components/Contacts/Contacts';
 import Blog from './Components/Blog/Blog';
 export const UserContext = createContext()
@@ -41,7 +41,7 @@ function App() {
                 <Destination FakeData={FakeData} data={data} setData={setData} ></Destination>
               </PrivateRoute>
               <Route path='/destination/:data'>
-                <ChooseData data={data}></ChooseData>
+                <ChooseDestination data={data}></ChooseDestination>
               </Route>
               <Route path='/sign up'>
                 <Login FakeData={FakeData} setData={setData}></Login>
